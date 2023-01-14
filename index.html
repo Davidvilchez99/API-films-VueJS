@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Films</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+</head>
+
+<body>
+  <div id="vue">
+    <div v-if="divInfo" id="infoPelicula">
+      <div id="infoPeliculaDiv">
+        <div>
+          <img v-if="peliculaMasInformacion.Poster === 'N/A'"
+            src="https://static.vecteezy.com/system/resources/previews/005/337/799/non_2x/icon-image-not-found-free-vector.jpg"
+            alt="">
+          <img v-else :src="peliculaMasInformacion.Poster">
+        </div>
+        <div>
+          <h1><b style="color: #ffad86;">Titulo: </b> {{peliculaMasInformacion.Title}}</h1>
+          <hr>
+          <p><b style="color: #ffad86;">Director: </b> {{peliculaMasInformacion.Director}}</p>
+          <p><b style="color: #ffad86;">Lenguaje: </b> {{peliculaMasInformacion.Language}}</p>
+          <p><b style="color: #ffad86;">Lanzamiento: </b> {{peliculaMasInformacion.Released}}</p>
+          <p><b style="color: #ffad86;">Año: </b> {{peliculaMasInformacion.Year}}</p>
+          <p><b style="color: #ffad86;">Tipo: </b> {{peliculaMasInformacion.Type}}</p>
+          <p><b style="color: #ffad86;">Resumen: </b> {{peliculaMasInformacion.Plot}}</p>
+        </div>
+        <i class="fa fa-times" id="cruzEliminar" @click="quitarDivInfo()" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div v-else id="infoPelicula" style="display: none;">
+      <div :id="peliculaMasInformacion.imdbID" id="infoPeliculaDiv">
+        <div><img :src="peliculaMasInformacion.Poster" alt=""></div>
+        <div>
+          <h1>Titulo: {{peliculaMasInformacion.Title}}</h1>
+          <hr>
+          <p>Director: {{peliculaMasInformacion.Director}}</p>
+          <p>Lenguaje: {{peliculaMasInformacion.Lenguage}}</p>
+          <p>Lanzamiento: {{peliculaMasInformacion.Released}}</p>
+          <p>Año: {{peliculaMasInformacion.Year}}</p>
+          <p>Tipo: {{peliculaMasInformacion.Type}}</p>
+          <p>Resumen: {{peliculaMasInformacion.Plot}}</p>
+        </div>
+      </div>
+    </div>
+    <div v-if="transparencia" id="boton" style="filter: blur(4px);">
+      <input type="text" id="input" v-model="filmInput" placeholder="  Write a film..."
+        v-on:keypress.enter="traerApi()">
+      <button id="search" @click="traerApi()">Search</button>
+      <button id="limpiar" @click="limpiar()">Clean</button>
+    </div>
+    <div v-else id="boton">
+      <input type="text" id="input" v-model="filmInput" placeholder="  Write a film..."
+        v-on:keypress.enter="traerApi()">
+      <button id="search" @click="traerApi()">Search</button>
+      <button id="limpiar" @click="limpiar()">Clean</button>
+    </div>
+    <div v-if="transparencia" id="demo" style="filter: blur(4px);">
+      <div class="div--demo" v-for="pelicula in peliculas" :id="pelicula.imdbID">
+        <h2>{{pelicula.Title}}</h2>
+        <div>
+          <img v-if="pelicula.Poster === 'N/A'"
+            src="https://static.vecteezy.com/system/resources/previews/005/337/799/non_2x/icon-image-not-found-free-vector.jpg"
+            alt="">
+          <img v-else :src="pelicula.Poster">
+        </div>
+        <div><button class="btnsInformacion" @click="traerMasInformacionPelicula(pelicula)" disabled>Mas informacion</button></div>
+      </div>
+    </div>
+    <div v-else id="demo">
+      <div class="div--demo" v-for="pelicula in peliculas" :id="pelicula.imdbID">
+        <h2>{{pelicula.Title}}</h2>
+        <div>
+          <img v-if="pelicula.Poster === 'N/A'"
+            src="https://static.vecteezy.com/system/resources/previews/005/337/799/non_2x/icon-image-not-found-free-vector.jpg"
+            alt="">
+          <img v-else :src="pelicula.Poster">
+        </div>
+        <div><button class="btnsInformacion" @click="traerMasInformacionPelicula(pelicula)">Mas informacion</button></div>
+      </div>
+    </div>
+  </div>
+  <script src="index.js"></script>
+</body>
+
+</html>
